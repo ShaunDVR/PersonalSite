@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Matter, { Mouse, MouseConstraint } from "matter-js";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
+import { getXValueInRange } from "@/utils/UtilFunctions";
+
 import CharS from "../public/char-s.svg";
 import PointingHand from "../public/pointing-hand.svg";
+import BioCard from "@/components/BioCard";
 
 export default function Home() {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const devStrictModeFix = useRef(false);
   let handOpacity = useRef(-1);
   let animDelay = useRef(true);
@@ -28,19 +33,22 @@ export default function Home() {
   const [currentLine, setCurrentLine] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const animTimeout = setTimeout(() => {
+    animDelay.current = false;
+    handOpacity.current = 1;
+  }, 7000);
+
   const marqueeInterval = setInterval(() => {
+    if (animDelay.current == true) {
+      return;
+    }
     let randomIndex = Math.floor(Math.random() * marqueeLines.length);
     while (randomIndex === currentIndex) {
       randomIndex = Math.floor(Math.random() * marqueeLines.length);
     }
     setCurrentLine(marqueeLines[randomIndex]);
     setCurrentIndex(randomIndex);
-    animDelay.current = false;
-  }, 5000);
-
-  const handOpactiyInterval = setInterval(() => {
-    handOpacity.current = 1;
-  }, 1000);
+  }, 3000);
 
   useEffect(() => {
     document.body.classList.add("hide-scrollbar");
@@ -50,7 +58,7 @@ export default function Home() {
       return;
     }
 
-    const handleMouseWheel = (event) => {
+    const handleMouseWheel = (event: { deltaY: any }) => {
       // Get the deltaY value to determine the direction of the scroll
       const deltaY = event.deltaY;
 
@@ -62,17 +70,6 @@ export default function Home() {
     };
 
     window.addEventListener("wheel", handleMouseWheel);
-
-    function getXValueInRange(
-      rangeStart: number,
-      rangeEnd: number,
-      maxDivisions: number,
-      divisionIndex: number
-    ) {
-      const divisionSize = (rangeEnd - rangeStart) / maxDivisions;
-      const x = rangeStart + divisionIndex * divisionSize + divisionSize / 2;
-      return x;
-    }
 
     function createTextObject(
       text: string,
@@ -182,7 +179,7 @@ export default function Home() {
     const canvas = canvasRef.current;
     const engine = Matter.Engine.create();
     const render = Matter.Render.create({
-      canvas: canvas,
+      canvas: canvas ? canvas : undefined,
       engine: engine,
       options: {
         width: window.innerWidth,
@@ -195,10 +192,10 @@ export default function Home() {
 
     const bodies:
       | any[]
-      | Matter.Body
-      | Matter.Composite
-      | Matter.Constraint
-      | Matter.MouseConstraint = [];
+      | Matter.Body[]
+      | Matter.Composite[]
+      | Matter.Constraint[]
+      | Matter.MouseConstraint[] = [];
 
     const floor = Matter.Bodies.rectangle(
       window.innerWidth / 2,
@@ -299,7 +296,7 @@ export default function Home() {
 
     Matter.World.add(engine.world, bodies);
 
-    const mouse = Mouse.create(canvas);
+    const mouse = Mouse.create(canvas as HTMLElement);
     const mouseConstraint = MouseConstraint.create(engine, {
       mouse: mouse,
       constraint: {
@@ -315,19 +312,16 @@ export default function Home() {
     Matter.Runner.run(engine);
     Matter.Render.run(render);
 
-    console.log("hello");
-
     return () => {
       Matter.Render.stop(render);
       Matter.Engine.clear(engine);
       clearInterval(marqueeInterval);
-      clearInterval(handOpactiyInterval);
       window.removeEventListener("wheel", handleMouseWheel);
     };
   }, []);
 
   return (
-    <div>
+    <div className="bg-slate-800">
       <div className="bg-slate-800 flex flex-col h-screen overflow-hidden">
         <div
           className="canvas-container gradient-opacity h-screen bg-cover bg-no-repeat bg-center bg-fixed"
@@ -337,17 +331,23 @@ export default function Home() {
         >
           <canvas ref={canvasRef}></canvas>
         </div>
-
-        <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center flex flex-col">
-          <h2 className="text-3xl">{currentLine}</h2>
+        <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center">
+          <TransitionGroup>
+            <CSSTransition key={currentLine} classNames="fade" timeout={500}>
+              <h2 className="text-3xl">{currentLine}</h2>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
         <PointingHand
+          hidden={animDelay.current}
           opacity={handOpacity.current}
           height={"5vh"}
           className="absolute z-10 bottom-1.5 left-1/2 transform rotate-90 -translate-x-1/2 -translate-y-1/2 duration-200 transition-opacity animate-pulse"
         />
       </div>
-      <div className="h-screen bg-slate-800"></div>
+      <div className="h-screen bg-slate-800">
+        <BioCard />
+      </div>
     </div>
   );
 }

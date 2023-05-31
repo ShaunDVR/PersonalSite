@@ -58,3 +58,30 @@ body {
   );
   mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 }
+
+.fade-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.fade-exit {
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  position: absolute;
+  transform: translateY(-100%);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.fade-enter-done {
+  transition: none;
+}
