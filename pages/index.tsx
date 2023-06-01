@@ -23,7 +23,6 @@ export default function Home() {
     "Tailwind CSS",
     "NextJS",
     "MongoDB, SQL, Firebase",
-    "Climber",
     "Web-dev Teacher",
     "Microservices",
     "Unit Testing",
@@ -64,8 +63,8 @@ export default function Home() {
 
       // Scroll the page based on the deltaY value
       window.scrollBy({
-        top: deltaY,
-        behavior: "auto", // You can change this to "auto" for instant scrolling
+        top: deltaY * 3,
+        behavior: "smooth", // You can change this to "auto" for instant scrolling
       });
     };
 
@@ -77,6 +76,7 @@ export default function Home() {
       y: number,
       fontsize?: number
     ) {
+      console.log(window.innerWidth);
       const fontSize = fontsize ? fontsize : 250;
       const textElement = document.createElement("div");
       textElement.style.position = "absolute";

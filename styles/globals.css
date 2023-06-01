@@ -85,3 +85,18 @@ body {
 .fade-enter-done {
   transition: none;
 }
+
+.watercolor-bg {
+  background-image: url("/watercolor-texture.png"); /* Replace with your watercolor texture image */
+  background-blend-mode: multiply;
+}
+
+.paper-bg {
+  background-image: url("/paper-texture.png"); /* Replace with your watercolor texture image */
+  background-blend-mode: multiply;
+}
+
+.light-paper-bg {
+  background-image: url("/light-paper-texture.png"); /* Replace with your watercolor texture image */
+  background-blend-mode: multiply;
+}
