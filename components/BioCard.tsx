@@ -34,17 +34,17 @@ const BioCard = () => {
   }, []);
 
   return (
-    <div className="mt-80 h-full">
+    <div className="mt-80 h-full ">
       {isClient && (
         <Image
           src="/pencil.png"
           alt=""
           width={window.innerWidth / 8}
           height={window.innerHeight / 2}
-          className="pencilImg absolute rotate-12 left-32"
+          className="pencilImg absolute rotate-12 left-32 "
         />
       )}
-      <div className="cardContainer relative w-1/2 h-3/4 left-1/4 grid grid-rows-5 grid-rows-auto bg-gray-900 border-8 border-white">
+      <div className="cardContainer relative lg:w-1/2 lg:h-3/4 lg:left-1/4 lg:mg-0 lg:ml-0 w-3/4 h-3/4 left-1/2 ml-[-35%] grid grid-rows-5 grid-rows-auto bg-gray-900 border-8 border-white">
         <div className="row-span-1 bg-teal-800 border-b-8 border-r border-white watercolor-bg text-center flex flex-col justify-center">
           <h2 className=" text-2xl text-white">Shaun Reilly</h2>
           <p className="personalDetails mb-5 text-white">
@@ -61,22 +61,6 @@ const BioCard = () => {
         </div>
         <div className="row-span-2 grid grid-cols-2 bg-slate-800 paper-bg">
           <div className="skillsHobbiesContainer border-b-8 border-white text-white flex flex-col justify-evenly items-center">
-            {/* <div className="flex items-center">
-              <h3 className="mr-8">Skills</h3>
-              <div>
-                <p>Stuff</p>
-                <p>Stuff</p>
-                <p>Stuff</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <h3 className="mr-8">Hobbies</h3>
-              <div>
-                <p>Stuff</p>
-                <p>Stuff</p>
-                <p>Stuff</p>
-              </div>
-            </div> */}
             <div className="grid grid-rows-2 grid-cols-2 items-center ml-4">
               <div className="row-span-1 col-span-1 mr-20">Skills</div>
               <div className="row-span-1 col-span-1">
@@ -104,7 +88,7 @@ const BioCard = () => {
           </div>
         </div>
         <div className="row-span-2 bg-teal-100 bg-gradient-to-br from-teal-100 to-teal-500 border-b border-r  border-white flex flex-col justify-center items-center p-4">
-          <p className=" text-sm">
+          <p className=" text-sm font-bradley overflow-hidden">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac
             nisi eu elit pretium tincidunt ut sed tellus. Sed sapien augue,
             convallis ac fringilla et, egestas at lectus. Pellentesque tristique
@@ -128,7 +112,7 @@ const BioCard = () => {
             scelerisque erat tempor id. Vestibulum vitae diam vitae enim rhoncus
             iaculis. Nunc non dolor et massa fermentum viverra hendrerit eget
             enim. Nam efficitur rhoncus felis, eu rutrum turpis ultrices eget.
-            Vivamus in nisl nibh.{" "}
+            Vivamus in nisl nibh.
           </p>
         </div>
       </div>

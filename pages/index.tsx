@@ -15,6 +15,7 @@ export default function Home() {
   const devStrictModeFix = useRef(false);
   let handOpacity = useRef(-1);
   let animDelay = useRef(true);
+  let screenSize = useRef(0);
 
   const marqueeLines = [
     "React Developer",
@@ -51,6 +52,15 @@ export default function Home() {
 
   useEffect(() => {
     document.body.classList.add("hide-scrollbar");
+
+    screenSize.current = window.innerWidth;
+
+    if (screenSize.current < 900) {
+      const animTimeoutFaster = setTimeout(() => {
+        animDelay.current = false;
+        handOpacity.current = 1;
+      }, 3000);
+    }
 
     if (devStrictModeFix.current == false) {
       devStrictModeFix.current = true;
@@ -163,7 +173,7 @@ export default function Home() {
     //   return { body, textElement };
     // }
 
-    function createTextBodiesFromString(string: string) {
+    function createTextBodiesFromString(string: string, fontSize?: number) {
       for (let i = 0; i < string.length; i++) {
         const charXValue = getXValueInRange(
           window.innerWidth / 10,
@@ -171,7 +181,12 @@ export default function Home() {
           string.length,
           i
         );
-        const charText = createTextObject(string[i], charXValue, -300);
+        const charText = createTextObject(
+          string[i],
+          charXValue,
+          -350,
+          fontSize ? fontSize : -300
+        );
         bodies.push(charText.body);
       }
     }
@@ -220,17 +235,19 @@ export default function Home() {
     );
     bodies.push(floor, ceiling);
 
-    function spawnLastNameWithDelay() {
+    function spawnLastNameWithDelay(fontsize?: number) {
       setTimeout(() => {
         const surnameBody = createTextObject(
           "Reilly",
           window.innerWidth * 0.9,
           -100,
-          50
+          fontsize ? fontsize : 50
         );
         surnameBody.body.frictionAir = 0.01;
         surnameBody.body.restitution = 0.4;
-        surnameBody.body.force = { x: -0.15, y: 0 };
+        surnameBody.body.force = !fontsize
+          ? { x: -0.15, y: 0 }
+          : { x: 0, y: 0 };
 
         // Set collision filter for surnameBody
         surnameBody.body.collisionFilter = {
@@ -242,8 +259,13 @@ export default function Home() {
       }, 7000); // Delay of 5000 milliseconds (5 seconds)
     }
 
-    createTextBodiesFromString("SHAUN");
-    spawnLastNameWithDelay();
+    if (screenSize.current <= 900) {
+      createTextBodiesFromString("SHAUN", 100);
+      spawnLastNameWithDelay(25);
+    } else {
+      createTextBodiesFromString("SHAUN");
+      spawnLastNameWithDelay();
+    }
 
     // Create constraints to chain the letters to the ceiling
     const constraintOptions = {
