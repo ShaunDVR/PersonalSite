@@ -12,6 +12,10 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        pinkHold: "#A1226E",
+        wallShade: "#5D4F5F",
+      },
     },
   },
   fontFamily: {

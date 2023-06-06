@@ -9,13 +9,15 @@ import { getXValueInRange } from "@/utils/UtilFunctions";
 import CharS from "../public/char-s.svg";
 import PointingHand from "../public/pointing-hand.svg";
 import BioCard from "@/components/BioCard";
+import ContactMe from "@/components/ContactMe";
+import { env } from "process";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const devStrictModeFix = useRef(false);
+  const devStrictModeFix = useRef(!(process.env.NODE_ENV == "development"));
   let handOpacity = useRef(-1);
   let animDelay = useRef(true);
-  let screenSize = useRef(0);
+  let screenSize = useRef<number | null>(null);
 
   const marqueeLines = [
     "React Developer",
@@ -33,38 +35,39 @@ export default function Home() {
   const [currentLine, setCurrentLine] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const animTimeout = setTimeout(() => {
-    animDelay.current = false;
-    handOpacity.current = 1;
-  }, 7000);
-
-  const marqueeInterval = setInterval(() => {
-    if (animDelay.current == true) {
+  useEffect(() => {
+    console.log(process.env.NODE_ENV);
+    if (devStrictModeFix.current == false) {
+      devStrictModeFix.current = true;
       return;
     }
-    let randomIndex = Math.floor(Math.random() * marqueeLines.length);
-    while (randomIndex === currentIndex) {
-      randomIndex = Math.floor(Math.random() * marqueeLines.length);
-    }
-    setCurrentLine(marqueeLines[randomIndex]);
-    setCurrentIndex(randomIndex);
-  }, 3000);
 
-  useEffect(() => {
+    const animTimeout = setTimeout(() => {
+      animDelay.current = false;
+      handOpacity.current = 1;
+    }, 7000);
+
+    const marqueeInterval = setInterval(() => {
+      if (animDelay.current == true) {
+        return;
+      }
+      let randomIndex = Math.floor(Math.random() * marqueeLines.length);
+      while (randomIndex === currentIndex) {
+        randomIndex = Math.floor(Math.random() * marqueeLines.length);
+      }
+      setCurrentLine(marqueeLines[randomIndex]);
+      setCurrentIndex(randomIndex);
+    }, 3000);
+
     document.body.classList.add("hide-scrollbar");
 
     screenSize.current = window.innerWidth;
 
-    if (screenSize.current < 900) {
+    if (screenSize.current && screenSize.current < 900) {
       const animTimeoutFaster = setTimeout(() => {
         animDelay.current = false;
         handOpacity.current = 1;
       }, 3000);
-    }
-
-    if (devStrictModeFix.current == false) {
-      devStrictModeFix.current = true;
-      return;
     }
 
     const handleMouseWheel = (event: { deltaY: any }) => {
@@ -86,7 +89,6 @@ export default function Home() {
       y: number,
       fontsize?: number
     ) {
-      console.log(window.innerWidth);
       const fontSize = fontsize ? fontsize : 250;
       const textElement = document.createElement("div");
       textElement.style.position = "absolute";
@@ -174,6 +176,7 @@ export default function Home() {
     // }
 
     function createTextBodiesFromString(string: string, fontSize?: number) {
+      console.log(fontSize);
       for (let i = 0; i < string.length; i++) {
         const charXValue = getXValueInRange(
           window.innerWidth / 10,
@@ -185,7 +188,7 @@ export default function Home() {
           string[i],
           charXValue,
           -350,
-          fontSize ? fontSize : -300
+          fontSize ? fontSize : 300
         );
         bodies.push(charText.body);
       }
@@ -259,7 +262,8 @@ export default function Home() {
       }, 7000); // Delay of 5000 milliseconds (5 seconds)
     }
 
-    if (screenSize.current <= 900) {
+    if (screenSize.current && screenSize.current <= 900) {
+      console.log(screenSize);
       createTextBodiesFromString("SHAUN", 100);
       spawnLastNameWithDelay(25);
     } else {
@@ -351,7 +355,10 @@ export default function Home() {
             backgroundImage: " url(/climbingWall.png)",
           }}
         >
-          <canvas ref={canvasRef}></canvas>
+          <canvas
+            ref={canvasRef}
+            className="lg:pointer-events-auto pointer-events-none"
+          ></canvas>
         </div>
         <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center">
           <TransitionGroup>
@@ -369,6 +376,9 @@ export default function Home() {
       </div>
       <div className="h-screen bg-slate-800">
         <BioCard />
+      </div>
+      <div className=" h-screen bg-slate-800 bg-cover bg-no-repeat bg-center bg-fixed ">
+        <ContactMe />
       </div>
     </div>
   );
