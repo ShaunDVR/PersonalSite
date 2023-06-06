@@ -9,13 +9,16 @@ import { getXValueInRange } from "@/utils/UtilFunctions";
 import CharS from "../public/char-s.svg";
 import PointingHand from "../public/pointing-hand.svg";
 import BioCard from "@/components/BioCard";
+import ContactMe from "@/components/ContactMe";
+import { env } from "process";
+import AppFooter from "@/components/AppFooter";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const devStrictModeFix = useRef(false);
+  const devStrictModeFix = useRef(!(process.env.NODE_ENV == "development"));
   let handOpacity = useRef(-1);
   let animDelay = useRef(true);
-  let screenSize = useRef(0);
+  let screenSize = useRef<number | null>(null);
 
   const marqueeLines = [
     "React Developer",
@@ -33,38 +36,39 @@ export default function Home() {
   const [currentLine, setCurrentLine] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const animTimeout = setTimeout(() => {
-    animDelay.current = false;
-    handOpacity.current = 1;
-  }, 7000);
-
-  const marqueeInterval = setInterval(() => {
-    if (animDelay.current == true) {
+  useEffect(() => {
+    console.log(process.env.NODE_ENV);
+    if (devStrictModeFix.current == false) {
+      devStrictModeFix.current = true;
       return;
     }
-    let randomIndex = Math.floor(Math.random() * marqueeLines.length);
-    while (randomIndex === currentIndex) {
-      randomIndex = Math.floor(Math.random() * marqueeLines.length);
-    }
-    setCurrentLine(marqueeLines[randomIndex]);
-    setCurrentIndex(randomIndex);
-  }, 3000);
 
-  useEffect(() => {
+    const animTimeout = setTimeout(() => {
+      animDelay.current = false;
+      handOpacity.current = 1;
+    }, 7000);
+
+    const marqueeInterval = setInterval(() => {
+      if (animDelay.current == true) {
+        return;
+      }
+      let randomIndex = Math.floor(Math.random() * marqueeLines.length);
+      while (randomIndex === currentIndex) {
+        randomIndex = Math.floor(Math.random() * marqueeLines.length);
+      }
+      setCurrentLine(marqueeLines[randomIndex]);
+      setCurrentIndex(randomIndex);
+    }, 3000);
+
     document.body.classList.add("hide-scrollbar");
 
     screenSize.current = window.innerWidth;
 
-    if (screenSize.current < 900) {
+    if (screenSize.current && screenSize.current < 900) {
       const animTimeoutFaster = setTimeout(() => {
         animDelay.current = false;
         handOpacity.current = 1;
       }, 3000);
-    }
-
-    if (devStrictModeFix.current == false) {
-      devStrictModeFix.current = true;
-      return;
     }
 
     const handleMouseWheel = (event: { deltaY: any }) => {
@@ -84,9 +88,9 @@ export default function Home() {
       text: string,
       x: number,
       y: number,
-      fontsize?: number
+      fontsize?: number,
+      rotation?: number
     ) {
-      console.log(window.innerWidth);
       const fontSize = fontsize ? fontsize : 250;
       const textElement = document.createElement("div");
       textElement.style.position = "absolute";
@@ -100,27 +104,52 @@ export default function Home() {
       if (text == "U") {
         textElement.style.rotate = "0.4rad";
       }
+      if (rotation) {
+        textElement.style.writingMode = "vertical-rl";
+        textElement.style.textOrientation = "upright";
+      }
       document.body.appendChild(textElement);
 
-      const width = textElement.clientWidth;
-      const height = textElement.clientHeight;
-      const body = Matter.Bodies.rectangle(x, y, width, height, {
-        isStatic: false,
-        render: { visible: false },
-        frictionAir: 0.08 + Math.random() * 0.06,
-        label: text,
-        inertia: Infinity,
-        collisionFilter: {
-          category: 0x0002, // Collides with everything except floor
-          mask: 0x0001, // Collides with floor
-        },
-      });
+      let width = textElement.clientWidth;
+      let height = textElement.clientHeight;
+      let body: any;
+      if (rotation) {
+        body = Matter.Bodies.rectangle(x, y, height, width, {
+          isStatic: false,
+          render: { visible: false },
+          frictionAir: 0.08 + Math.random() * 0.06,
+          label: text,
+          inertia: Infinity,
+          collisionFilter: {
+            category: 0x0002, // Collides with everything except floor
+            mask: 0x0001, // Collides with floor
+          },
+        });
+      } else {
+        body = Matter.Bodies.rectangle(x, y, width, height, {
+          isStatic: false,
+          render: { visible: false },
+          frictionAir: 0.08 + Math.random() * 0.06,
+          label: text,
+          inertia: Infinity,
+          collisionFilter: {
+            category: 0x0002, // Collides with everything except floor
+            mask: 0x0001, // Collides with floor
+          },
+        });
+      }
+      Matter.Body.setInertia(body, Infinity);
 
       const updateTextPosition = () => {
         let previousHeight = parseFloat(textElement.style.top);
         const position = body.position;
         textElement.style.left = `${position.x - width / 2}px`;
         textElement.style.top = `${position.y - height / 2}px`;
+        if (position.y > window.innerHeight) {
+          console.log("hello");
+          Matter.World.remove(engine.world, body, true);
+          textElement.remove();
+        }
       };
 
       Matter.Events.on(engine, "afterUpdate", updateTextPosition);
@@ -174,6 +203,7 @@ export default function Home() {
     // }
 
     function createTextBodiesFromString(string: string, fontSize?: number) {
+      console.log(fontSize);
       for (let i = 0; i < string.length; i++) {
         const charXValue = getXValueInRange(
           window.innerWidth / 10,
@@ -185,7 +215,7 @@ export default function Home() {
           string[i],
           charXValue,
           -350,
-          fontSize ? fontSize : -300
+          fontSize ? fontSize : 300
         );
         bodies.push(charText.body);
       }
@@ -214,10 +244,17 @@ export default function Home() {
 
     const floor = Matter.Bodies.rectangle(
       window.innerWidth / 2,
-      window.innerHeight / 1.5,
+      window.innerHeight / 2 + window.innerHeight / 2.5,
       window.innerWidth,
-      10,
+      window.innerHeight / 2,
       { isStatic: true, render: { visible: false } }
+    );
+    const trueFloor = Matter.Bodies.rectangle(
+      window.innerWidth / 2,
+      window.innerHeight,
+      window.innerWidth,
+      1,
+      { isStatic: true, render: { visible: true } }
     );
     const ceiling = Matter.Bodies.rectangle(
       window.innerWidth / 2,
@@ -233,7 +270,7 @@ export default function Home() {
         },
       }
     );
-    bodies.push(floor, ceiling);
+    bodies.push(floor, trueFloor, ceiling);
 
     function spawnLastNameWithDelay(fontsize?: number) {
       setTimeout(() => {
@@ -259,51 +296,90 @@ export default function Home() {
       }, 7000); // Delay of 5000 milliseconds (5 seconds)
     }
 
-    if (screenSize.current <= 900) {
-      createTextBodiesFromString("SHAUN", 100);
-      spawnLastNameWithDelay(25);
-    } else {
-      createTextBodiesFromString("SHAUN");
-      spawnLastNameWithDelay();
+    function spawnLastNameWithDelayMobile() {
+      setTimeout(() => {
+        const surnameBody = createTextObject(
+          "REILLY",
+          window.innerWidth * 0.7,
+          -100,
+          60,
+          -Math.PI / 2
+        );
+        surnameBody.body.frictionAir = 0.01;
+        surnameBody.body.restitution = 0.4;
+        surnameBody.textElement.style.letterSpacing = "1px";
+        Matter.Body.rotate(surnameBody.body, Math.PI / 2);
+
+        Matter.World.add(engine.world, surnameBody.body);
+      }, 7000); // Delay of 5000 milliseconds (5 seconds)
     }
 
-    // Create constraints to chain the letters to the ceiling
-    const constraintOptions = {
-      stiffness: 0.0001,
-      damping: 0.01,
-      length: window.innerHeight / 10,
-    };
+    function createDesktopConstraints() {
+      const constraintOptions = {
+        stiffness: 0.0001,
+        damping: 0.01,
+        length: window.innerHeight / 10,
+      };
 
-    for (let i = 2; i < bodies.length; i++) {
+      for (let i = 3; i < bodies.length; i++) {
+        const charXValue = getXValueInRange(
+          window.innerWidth / 10,
+          window.innerWidth - window.innerWidth / 10,
+          bodies.length - 2,
+          i
+        );
+        const attachPoint = () => {
+          let letter = bodies[i].label;
+          switch (letter) {
+            case "S":
+              return { x: 0, y: -55 };
+            case "H":
+              return { x: 0, y: 10 };
+            case "A":
+              return { x: 0, y: -55 };
+            // Rotation problems
+            case "U":
+              return { x: -45, y: -55 };
+            // case "U":
+            //   return { x: 0, y: 90 };
+            default:
+              return { x: 0, y: 0 };
+          }
+        };
+        const constraint = Matter.Constraint.create({
+          bodyA: ceiling,
+          pointA: { x: charXValue - window.innerWidth / 1.2, y: 0 },
+          bodyB: bodies[i],
+          pointB: attachPoint(),
+          render: {
+            type: "line",
+            anchors: false,
+            strokeStyle: `#875638`,
+            lineWidth: 7,
+          },
+          ...constraintOptions,
+        });
+
+        Matter.World.add(engine.world, constraint);
+      }
+    }
+
+    function createMobileConstraints() {
+      const constraintOptions = {
+        stiffness: 0.01,
+        damping: 0.01,
+        length: window.innerHeight / 13,
+      };
       const charXValue = getXValueInRange(
         window.innerWidth / 10,
         window.innerWidth - window.innerWidth / 10,
-        bodies.length - 2,
-        i
+        bodies.length - 3,
+        2
       );
-      const attachPoint = () => {
-        let letter = bodies[i].label;
-        switch (letter) {
-          case "S":
-            return { x: 0, y: -55 };
-          case "H":
-            return { x: 0, y: 10 };
-          case "A":
-            return { x: 0, y: -55 };
-          // Rotation problems
-          case "U":
-            return { x: -45, y: -55 };
-          // case "U":
-          //   return { x: 0, y: 90 };
-          default:
-            return { x: 0, y: 0 };
-        }
-      };
       const constraint = Matter.Constraint.create({
         bodyA: ceiling,
-        pointA: { x: charXValue - window.innerWidth / 1.2, y: 0 },
-        bodyB: bodies[i],
-        pointB: attachPoint(),
+        pointA: { x: charXValue - window.innerWidth / 1.4, y: 0 },
+        bodyB: bodies[3],
         render: {
           type: "line",
           anchors: false,
@@ -312,9 +388,36 @@ export default function Home() {
         },
         ...constraintOptions,
       });
-
       Matter.World.add(engine.world, constraint);
+
+      for (let i = 4; i < bodies.length; i++) {
+        const constraint = Matter.Constraint.create({
+          bodyA: bodies[i - 1],
+          bodyB: bodies[i],
+          render: {
+            type: "line",
+            anchors: false,
+            strokeStyle: `#875638`,
+            lineWidth: 7,
+          },
+          ...constraintOptions,
+        });
+
+        Matter.World.add(engine.world, constraint);
+      }
     }
+
+    if (screenSize.current && screenSize.current <= 900) {
+      createTextBodiesFromString("SHAUN", 100);
+      spawnLastNameWithDelayMobile();
+      createMobileConstraints();
+    } else {
+      createTextBodiesFromString("SHAUN");
+      spawnLastNameWithDelay();
+      createDesktopConstraints();
+    }
+
+    // Create constraints to chain the letters to the ceiling
 
     Matter.World.add(engine.world, bodies);
 
@@ -351,7 +454,7 @@ export default function Home() {
             backgroundImage: " url(/climbingWall.png)",
           }}
         >
-          <canvas ref={canvasRef}></canvas>
+          <canvas ref={canvasRef} className="lg:pointer-events-auto "></canvas>
         </div>
         <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center">
           <TransitionGroup>
@@ -370,6 +473,10 @@ export default function Home() {
       <div className="h-screen bg-slate-800">
         <BioCard />
       </div>
+      <div className=" h-80 bg-slate-800 bg-cover bg-no-repeat bg-center bg-fixed">
+        <ContactMe />
+      </div>
+      <AppFooter />
     </div>
   );
 }
