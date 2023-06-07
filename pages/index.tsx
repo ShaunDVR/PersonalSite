@@ -34,18 +34,11 @@ export default function Home() {
   ];
   const [currentLine, setCurrentLine] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const handleImageLoad = () => {
-      setIsLoaded(true);
-    };
-
-    const backgroundImage = new Image();
-    backgroundImage.src = "/climbingWall.png";
-    backgroundImage.onload = handleImageLoad;
-
     if (devStrictModeFix.current == false) {
       devStrictModeFix.current = true;
       return;
@@ -440,8 +433,20 @@ export default function Home() {
 
     Matter.World.add(engine.world, mouseConstraint);
 
-    Matter.Runner.run(engine);
-    Matter.Render.run(render);
+    let matterjsRunner: any;
+
+    const handleImageLoad = () => {
+      setIsLoaded(true);
+      matterjsRunner.enabled = true;
+    };
+
+    const backgroundImage = new Image();
+    backgroundImage.src = "/climbingWall.png";
+    backgroundImage.onload = handleImageLoad;
+
+    matterjsRunner = Matter.Runner.run(engine);
+
+    matterjsRunner.enabled = false;
 
     return () => {
       Matter.Render.stop(render);
