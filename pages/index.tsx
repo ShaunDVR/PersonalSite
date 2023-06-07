@@ -3,14 +3,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter, { Mouse, MouseConstraint } from "matter-js";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { ClimbingBoxLoader } from "react-spinners";
 
 import { getXValueInRange } from "@/utils/UtilFunctions";
 
-import CharS from "../public/char-s.svg";
 import PointingHand from "../public/pointing-hand.svg";
 import BioCard from "@/components/BioCard";
 import ContactMe from "@/components/ContactMe";
-import { env } from "process";
 import AppFooter from "@/components/AppFooter";
 
 export default function Home() {
@@ -36,8 +35,17 @@ export default function Home() {
   const [currentLine, setCurrentLine] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
-    console.log(process.env.NODE_ENV);
+    const handleImageLoad = () => {
+      setIsLoaded(true);
+    };
+
+    const backgroundImage = new Image();
+    backgroundImage.src = "/climbingWall.png";
+    backgroundImage.onload = handleImageLoad;
+
     if (devStrictModeFix.current == false) {
       devStrictModeFix.current = true;
       return;
@@ -146,7 +154,6 @@ export default function Home() {
         textElement.style.left = `${position.x - width / 2}px`;
         textElement.style.top = `${position.y - height / 2}px`;
         if (position.y > window.innerHeight) {
-          console.log("hello");
           Matter.World.remove(engine.world, body, true);
           textElement.remove();
         }
@@ -203,7 +210,6 @@ export default function Home() {
     // }
 
     function createTextBodiesFromString(string: string, fontSize?: number) {
-      console.log(fontSize);
       for (let i = 0; i < string.length; i++) {
         const charXValue = getXValueInRange(
           window.innerWidth / 10,
@@ -332,7 +338,7 @@ export default function Home() {
           let letter = bodies[i].label;
           switch (letter) {
             case "S":
-              return { x: 0, y: -55 };
+              return { x: 0, y: -65 };
             case "H":
               return { x: 0, y: 10 };
             case "A":
@@ -446,37 +452,47 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-slate-800">
-      <div className="bg-slate-800 flex flex-col h-screen overflow-hidden">
-        <div
-          className="canvas-container gradient-opacity h-screen bg-cover bg-no-repeat bg-center bg-fixed"
-          style={{
-            backgroundImage: " url(/climbingWall.png)",
-          }}
-        >
-          <canvas ref={canvasRef} className="lg:pointer-events-auto "></canvas>
+    <>
+      {isLoaded ? null : (
+        <div className="flex items-center justify-center h-screen bg-slate-800">
+          <ClimbingBoxLoader color="#36d7b7" size={40} />
         </div>
-        <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center">
-          <TransitionGroup>
-            <CSSTransition key={currentLine} classNames="fade" timeout={500}>
-              <h2 className="text-3xl">{currentLine}</h2>
-            </CSSTransition>
-          </TransitionGroup>
+      )}
+      <div className="bg-slate-800" hidden={!isLoaded}>
+        <div className="bg-slate-800 flex flex-col h-screen overflow-hidden">
+          <div
+            className="canvas-container gradient-opacity h-screen bg-cover bg-no-repeat bg-center bg-fixed"
+            style={{
+              backgroundImage: " url(/climbingWall.png)",
+            }}
+          >
+            <canvas
+              ref={canvasRef}
+              className="lg:pointer-events-auto "
+            ></canvas>
+          </div>
+          <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center">
+            <TransitionGroup>
+              <CSSTransition key={currentLine} classNames="fade" timeout={500}>
+                <h2 className="text-3xl">{currentLine}</h2>
+              </CSSTransition>
+            </TransitionGroup>
+          </div>
+          <PointingHand
+            hidden={animDelay.current}
+            opacity={handOpacity.current}
+            height={"5vh"}
+            className="absolute z-10 bottom-1.5 left-1/2 transform rotate-90 -translate-x-1/2 -translate-y-1/2 duration-200 transition-opacity animate-pulse"
+          />
         </div>
-        <PointingHand
-          hidden={animDelay.current}
-          opacity={handOpacity.current}
-          height={"5vh"}
-          className="absolute z-10 bottom-1.5 left-1/2 transform rotate-90 -translate-x-1/2 -translate-y-1/2 duration-200 transition-opacity animate-pulse"
-        />
+        <div className="h-screen bg-slate-800">
+          <BioCard />
+        </div>
+        <div className=" h-80 bg-slate-800 bg-cover bg-no-repeat bg-center bg-fixed">
+          <ContactMe />
+        </div>
+        <AppFooter />
       </div>
-      <div className="h-screen bg-slate-800">
-        <BioCard />
-      </div>
-      <div className=" h-80 bg-slate-800 bg-cover bg-no-repeat bg-center bg-fixed">
-        <ContactMe />
-      </div>
-      <AppFooter />
-    </div>
+    </>
   );
 }
