@@ -55,24 +55,37 @@ const BioCard = () => {
             <AiFillLinkedin color="white" />
           </div>
         </div>
-        <div className="row-span-2 grid grid-cols-2 bg-slate-800 paper-bg">
-          <div className="skillsHobbiesContainer border-b-8 border-white text-white flex flex-col justify-evenly items-center">
-            <div className="grid grid-rows-2 grid-cols-2 items-center ml-4 gap-x-4 lg:text-lg text-sm">
-              <div className="row-span-1 col-span-1 ">Skills</div>
-              <div className="row-span-1 col-span-1">
-                <p>Full Stack Web Development</p>
-                <p>Teaching and Instruction</p>
-                <p>Entrepreneurial Mindset</p>
+        {windowSize.width > 600 ? (
+          <div className="row-span-2 grid grid-cols-2 bg-slate-800 paper-bg">
+            <div className="skillsHobbiesContainer border-b-8 border-white text-white flex flex-col justify-evenly items-center">
+              <div className="grid grid-rows-2 grid-cols-2 items-center ml-16 gap-x-4 lg:text-lg">
+                <div className="row-span-1 col-span-1 ">Skills</div>
+                <div className="row-span-1 col-span-1">
+                  <p>Full Stack Web Development</p>
+                  <p>Teaching and Instruction</p>
+                  <p>Entrepreneurial Mindset</p>
+                </div>
+                <div className="row-span-1 col-span-1 mt-8">Hobbies</div>
+                <div className="row-span-1 col-span-1 mt-8">
+                  <p>Climbing</p>
+                  <p>Painting</p>
+                  <p>Cooking</p>
+                </div>
               </div>
-              <div className="row-span-1 col-span-1 mt-8">Hobbies</div>
-              <div className="row-span-1 col-span-1 mt-8">
-                <p>Climbing</p>
-                <p>Painting</p>
-                <p>Cooking</p>
+            </div>
+            <div className=" border-b-8 border-r border-white flex flex-col justify-center items-center">
+              <div className="h-full w-full relative">
+                <Image
+                  src={"/face-image-placeholder2.png"}
+                  alt=""
+                  fill={true}
+                  style={{ objectFit: "contain" }}
+                />
               </div>
             </div>
           </div>
-          <div className=" border-b-8 border-r border-white flex flex-col justify-center items-center">
+        ) : (
+          <div className="row-span-2 border-b-8 border-r border-white flex flex-col justify-center items-center">
             <div className="h-full w-full relative">
               <Image
                 src={"/face-image-placeholder2.png"}
@@ -82,23 +95,25 @@ const BioCard = () => {
               />
             </div>
           </div>
-        </div>
+        )}
         <div className="row-span-2 bg-teal-100 bg-gradient-to-br from-teal-100 to-teal-500 border-b border-r  border-white flex flex-col justify-center items-center p-4">
           <p className=" text-sm font-bradley overflow-scroll">
-            I&apos;m Shaun Reilly, a growth-focused programmer with a passion
-            for full stack web development. I thrive on challenges and have an
-            insatiable drive to continuously expand my skills. With a diverse
-            background in teaching, content creation, and running my own online
-            business, I bring a wealth of experiences to the table. My lifelong
-            hobbyist interest in programming led me to secure a place on the
-            2022 BECAS Santander Scholarship program, where I immersed myself in
-            Full Stack Web Development. Since then, I have successfully taught
-            both Front and Back End Web Development, demonstrating my dedication
-            to sharing knowledge and empowering others. By staying abreast of
-            the latest industry trends, I offer a fresh perspective and an
-            innovative approach to every project. If you&apos;re searching for a
-            motivated and versatile programmer to contribute to your team&apos;s
-            success, let&apos;s connect and bring our collective ideas to life.
+            I&apos;m Shaun, a growth-focused programmer with a passion for full
+            stack web development. I thrive on challenges and have an insatiable
+            drive to continuously expand my skills. <br />
+            With a diverse background in teaching, content creation, and running
+            my own online business, I bring a wealth of experiences to the
+            table. <br />
+            <br /> My lifelong hobbyist interest in programming led me to win a
+            place on the 2022 BECAS Santander Scholarship program for Web
+            Development. Since then, I have taught both Front and Back End Web
+            Development, demonstrating my dedication to sharing knowledge and
+            empowering others. <br />
+            <br /> By staying abreast of the latest industry trends, I offer a
+            fresh perspective and an innovative approach to every project. If
+            you&apos;re searching for a motivated and versatile programmer to
+            contribute to your team&apos;s success, let&apos;s connect and bring
+            our collective ideas to life.
           </p>
         </div>
       </div>

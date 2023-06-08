@@ -253,7 +253,7 @@ export default function Home() {
       window.innerHeight,
       window.innerWidth,
       1,
-      { isStatic: true, render: { visible: true } }
+      { isStatic: true, render: { visible: false } }
     );
     const ceiling = Matter.Bodies.rectangle(
       window.innerWidth / 2,
@@ -445,6 +445,7 @@ export default function Home() {
     backgroundImage.onload = handleImageLoad;
 
     matterjsRunner = Matter.Runner.run(engine);
+    Matter.Render.run(render);
 
     matterjsRunner.enabled = false;
 
