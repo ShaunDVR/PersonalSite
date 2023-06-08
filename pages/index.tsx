@@ -39,11 +39,6 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (devStrictModeFix.current == false) {
-      devStrictModeFix.current = true;
-      return;
-    }
-
     const animTimeout = setTimeout(() => {
       animDelay.current = false;
       handOpacity.current = 1;
@@ -94,6 +89,7 @@ export default function Home() {
     ) {
       const fontSize = fontsize ? fontsize : 250;
       const textElement = document.createElement("div");
+      textElement.className = "canvasControlledElement";
       textElement.style.position = "absolute";
       textElement.style.left = `${x}px`;
       textElement.style.top = `${y}px`;
@@ -454,6 +450,12 @@ export default function Home() {
       Matter.Engine.clear(engine);
       clearInterval(marqueeInterval);
       window.removeEventListener("wheel", handleMouseWheel);
+      let textElements = document.getElementsByClassName(
+        "canvasControlledElement"
+      );
+      while (textElements.length > 0) {
+        textElements[0].remove();
+      }
     };
   }, []);
 
