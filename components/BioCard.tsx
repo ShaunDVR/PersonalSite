@@ -60,15 +60,15 @@ const BioCard = () => {
             <div className="grid grid-rows-2 grid-cols-2 items-center ml-4 gap-x-4 lg:text-lg text-sm">
               <div className="row-span-1 col-span-1 ">Skills</div>
               <div className="row-span-1 col-span-1">
-                <p>One</p>
-                <p>Two</p>
-                <p>Three</p>
+                <p>Full Stack Web Development</p>
+                <p>Teaching and Instruction</p>
+                <p>Entrepreneurial Mindset</p>
               </div>
               <div className="row-span-1 col-span-1 mt-8">Hobbies</div>
               <div className="row-span-1 col-span-1 mt-8">
-                <p>One</p>
-                <p>Two</p>
-                <p>Three</p>
+                <p>Climbing</p>
+                <p>Painting</p>
+                <p>Cooking</p>
               </div>
             </div>
           </div>
@@ -85,30 +85,20 @@ const BioCard = () => {
         </div>
         <div className="row-span-2 bg-teal-100 bg-gradient-to-br from-teal-100 to-teal-500 border-b border-r  border-white flex flex-col justify-center items-center p-4">
           <p className=" text-sm font-bradley overflow-scroll">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac
-            nisi eu elit pretium tincidunt ut sed tellus. Sed sapien augue,
-            convallis ac fringilla et, egestas at lectus. Pellentesque tristique
-            maximus sapien. In rhoncus aliquet rhoncus. Nulla nec suscipit
-            massa. Vivamus ultricies varius tortor fringilla ultricies. Quisque
-            at enim ac arcu tincidunt pulvinar ac sit amet erat. Mauris
-            dignissim semper ex, sed lobortis felis rhoncus et. In mattis eget
-            nisl laoreet scelerisque. Donec sit amet varius velit, nec dignissim
-            lacus. Morbi faucibus, libero sit amet malesuada accumsan, urna
-            lorem tristique lacus, ac facilisis velit est in ante. Integer in
-            mattis turpis. Vivamus leo ipsum, vulputate et eleifend eget,
-            fermentum nec velit. Duis eu sem quis sapien porta aliquam. Vivamus
-            tortor nisl, imperdiet vitae condimentum at, hendrerit in justo.
-            Vivamus sit amet accumsan lorem, at tincidunt nisl. Fusce et blandit
-            quam, sit amet varius erat. Phasellus porttitor, dui non bibendum
-            rutrum, dolor urna feugiat lectus, sit amet pretium orci sem id
-            elit. Vivamus vitae turpis tempor, feugiat urna in, sodales turpis.
-            Etiam a urna eu nibh fringilla commodo. Aliquam malesuada tristique
-            neque ac vehicula. Mauris molestie at leo a porta. Praesent maximus
-            risus sed est vestibulum mattis. Integer imperdiet gravida nisl, at
-            scelerisque erat tempor id. Vestibulum vitae diam vitae enim rhoncus
-            iaculis. Nunc non dolor et massa fermentum viverra hendrerit eget
-            enim. Nam efficitur rhoncus felis, eu rutrum turpis ultrices eget.
-            Vivamus in nisl nibh.
+            I&apos;m Shaun Reilly, a growth-focused programmer with a passion
+            for full stack web development. I thrive on challenges and have an
+            insatiable drive to continuously expand my skills. With a diverse
+            background in teaching, content creation, and running my own online
+            business, I bring a wealth of experiences to the table. My lifelong
+            hobbyist interest in programming led me to secure a place on the
+            2022 BECAS Santander Scholarship program, where I immersed myself in
+            Full Stack Web Development. Since then, I have successfully taught
+            both Front and Back End Web Development, demonstrating my dedication
+            to sharing knowledge and empowering others. By staying abreast of
+            the latest industry trends, I offer a fresh perspective and an
+            innovative approach to every project. If you&apos;re searching for a
+            motivated and versatile programmer to contribute to your team&apos;s
+            success, let&apos;s connect and bring our collective ideas to life.
           </p>
         </div>
       </div>
