@@ -64,9 +64,14 @@ const ContactMe = () => {
                 qualifications and experience?
               </p>
             ) : (
-              <p className="text-white text-center p-4">
-                Would you like to open your default E-mail App?
-              </p>
+              <>
+                <p className="text-white text-center p-4">
+                  You can contact me at syzygysquare@gmail.com
+                </p>
+                <p className="text-white text-center p-4">
+                  Would you like to open your default E-mail App?
+                </p>
+              </>
             )}
             <div className="flex justify-center py-4">
               <button

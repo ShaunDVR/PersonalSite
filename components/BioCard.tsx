@@ -45,15 +45,16 @@ const BioCard = () => {
           <h2 className=" lg:text-3xl text-xl text-white">Shaun Reilly</h2>
           <p className="personalDetails text-white lg:text-base text-sm">
             Full Stack Web-dev
-            <BsGlobeCentralSouthAsia className=" inline-flex ml-5 mr-5" />
+          </p>
+          <p className="personalDetails text-white lg:text-base text-sm">
             Nr. Manchester, UK
           </p>
-          <div className="socialIconContainer flex justify-center space-x-5 lg:mt-5 mt-2">
+          {/* <div className="socialIconContainer flex justify-center space-x-5 lg:mt-5 mt-2">
             <FaFacebook color="white" />
             <FiTwitter color="white" />
             <AiFillInstagram color="white" />
             <AiFillLinkedin color="white" />
-          </div>
+          </div> */}
         </div>
         {windowSize.width > 600 ? (
           <div className="row-span-2 grid grid-cols-2 bg-slate-800 paper-bg">
@@ -97,7 +98,7 @@ const BioCard = () => {
           </div>
         )}
         <div className="row-span-2 bg-teal-100 bg-gradient-to-br from-teal-100 to-teal-500 border-b border-r  border-white flex flex-col justify-center items-center p-4">
-          <p className=" text-sm font-bradley overflow-scroll">
+          <p className=" text-sm font-bradley overflow-scroll ">
             I&apos;m Shaun, a growth-focused programmer with a passion for full
             stack web development. I thrive on challenges and have an insatiable
             drive to continuously expand my skills. <br />

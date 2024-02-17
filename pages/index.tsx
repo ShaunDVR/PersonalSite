@@ -31,6 +31,9 @@ export default function Home() {
     "Unit Testing",
     "That U is intentional",
     "Git Workflow",
+    "Project Management",
+    "Team Lead",
+    "Agile & Waterfall",
   ];
   const [currentLine, setCurrentLine] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,19 +45,26 @@ export default function Home() {
     const animTimeout = setTimeout(() => {
       animDelay.current = false;
       handOpacity.current = 1;
-    }, 7000);
+    }, 3000);
+
+    let usedIndexi: number[] = [];
 
     const marqueeInterval = setInterval(() => {
       if (animDelay.current == true) {
         return;
       }
       let randomIndex = Math.floor(Math.random() * marqueeLines.length);
-      while (randomIndex === currentIndex) {
+      while (usedIndexi.includes(randomIndex)) {
         randomIndex = Math.floor(Math.random() * marqueeLines.length);
       }
+      usedIndexi.push(randomIndex);
       setCurrentLine(marqueeLines[randomIndex]);
       setCurrentIndex(randomIndex);
-    }, 3000);
+
+      if (usedIndexi.length === marqueeLines.length) {
+        usedIndexi = [];
+      }
+    }, 4000);
 
     document.body.classList.add("hide-scrollbar");
 
@@ -288,7 +298,7 @@ export default function Home() {
         };
 
         Matter.World.add(engine.world, surnameBody.body);
-      }, 7000); // Delay of 5000 milliseconds (5 seconds)
+      }, 3000); // Delay of 5000 milliseconds (5 seconds)
     }
 
     function spawnLastNameWithDelayMobile() {
@@ -300,19 +310,19 @@ export default function Home() {
           60,
           -Math.PI / 2
         );
-        surnameBody.body.frictionAir = 0.01;
+        surnameBody.body.frictionAir = 0.1;
         surnameBody.body.restitution = 0.4;
         surnameBody.textElement.style.letterSpacing = "1px";
         Matter.Body.rotate(surnameBody.body, Math.PI / 2);
 
         Matter.World.add(engine.world, surnameBody.body);
-      }, 7000); // Delay of 5000 milliseconds (5 seconds)
+      }, 4000); // Delay of 5000 milliseconds (5 seconds)
     }
 
     function createDesktopConstraints() {
       const constraintOptions = {
         stiffness: 0.0001,
-        damping: 0.01,
+        damping: 0.001,
         length: window.innerHeight / 10,
       };
 
