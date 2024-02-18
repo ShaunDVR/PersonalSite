@@ -445,18 +445,18 @@ export default function Home() {
 
     Matter.World.add(engine.world, bodies);
 
-    const mouse = Mouse.create(canvas as HTMLElement);
-    const mouseConstraint = MouseConstraint.create(engine, {
-      mouse: mouse,
-      constraint: {
-        stiffness: 0.2,
-        render: {
-          visible: false,
-        },
-      },
-    });
+    // const mouse = Mouse.create(canvas as HTMLElement);
+    // const mouseConstraint = MouseConstraint.create(engine, {
+    //   mouse: mouse,
+    //   constraint: {
+    //     stiffness: 0.2,
+    //     render: {
+    //       visible: false,
+    //     },
+    //   },
+    // });
 
-    Matter.World.add(engine.world, mouseConstraint);
+    // Matter.World.add(engine.world, mouseConstraint);
 
     let matterjsRunner: any;
 
