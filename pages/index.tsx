@@ -152,7 +152,11 @@ export default function Home() {
         const position = body.position;
         textElement.style.left = `${position.x - width / 2}px`;
         textElement.style.top = `${position.y - height / 2}px`;
-        if (position.y > window.innerHeight) {
+        if (
+          position.y > window.innerHeight ||
+          position.x > window.innerWidth ||
+          position.x < 0
+        ) {
           Matter.World.remove(engine.world, body, true);
           textElement.remove();
         }
@@ -254,6 +258,21 @@ export default function Home() {
       window.innerHeight / 2,
       { isStatic: true, render: { visible: false } }
     );
+    const leftWall = Matter.Bodies.rectangle(
+      0,
+      window.innerHeight / 2,
+      10,
+      window.innerHeight,
+      { isStatic: true, render: { visible: false } }
+    );
+
+    const rightWall = Matter.Bodies.rectangle(
+      window.innerWidth,
+      window.innerHeight / 2,
+      10,
+      window.innerHeight,
+      { isStatic: true, render: { visible: false } }
+    );
     const trueFloor = Matter.Bodies.rectangle(
       window.innerWidth / 2,
       window.innerHeight,
@@ -275,7 +294,7 @@ export default function Home() {
         },
       }
     );
-    bodies.push(floor, trueFloor, ceiling);
+    bodies.push(floor, trueFloor, leftWall, rightWall, ceiling);
 
     function spawnLastNameWithDelay(fontsize?: number) {
       setTimeout(() => {
@@ -326,7 +345,7 @@ export default function Home() {
         length: window.innerHeight / 10,
       };
 
-      for (let i = 3; i < bodies.length; i++) {
+      for (let i = 5; i < bodies.length; i++) {
         const charXValue = getXValueInRange(
           window.innerWidth / 10,
           window.innerWidth - window.innerWidth / 10,
@@ -378,13 +397,13 @@ export default function Home() {
       const charXValue = getXValueInRange(
         window.innerWidth / 10,
         window.innerWidth - window.innerWidth / 10,
-        bodies.length - 3,
+        bodies.length - 5,
         2
       );
       const constraint = Matter.Constraint.create({
         bodyA: ceiling,
         pointA: { x: charXValue - window.innerWidth / 1.4, y: 0 },
-        bodyB: bodies[3],
+        bodyB: bodies[5],
         render: {
           type: "line",
           anchors: false,
@@ -395,7 +414,7 @@ export default function Home() {
       });
       Matter.World.add(engine.world, constraint);
 
-      for (let i = 4; i < bodies.length; i++) {
+      for (let i = 6; i < bodies.length; i++) {
         const constraint = Matter.Constraint.create({
           bodyA: bodies[i - 1],
           bodyB: bodies[i],
