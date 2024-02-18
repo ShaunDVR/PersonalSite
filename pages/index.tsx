@@ -391,7 +391,7 @@ export default function Home() {
     function createMobileConstraints() {
       const constraintOptions = {
         stiffness: 0.01,
-        damping: 0.01,
+        damping: 0.001,
         length: window.innerHeight / 13,
       };
       const charXValue = getXValueInRange(
