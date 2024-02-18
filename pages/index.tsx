@@ -522,7 +522,6 @@ export default function Home() {
       )}
       <div className="bg-slate-800" hidden={!isLoaded}>
         <div className="bg-slate-800 flex flex-col h-screen overflow-hidden">
-          <p>{matterRunData ? matterRunData.current : ""}</p>
           <div
             className="canvas-container gradient-opacity h-screen bg-cover bg-no-repeat bg-center bg-fixed"
             style={{
