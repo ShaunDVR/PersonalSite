@@ -125,17 +125,17 @@ body {
 }
 
 .watercolor-bg {
-  background-image: url("/watercolor-texture.png"); 
+  background-image: url("/watercolor-texture.png");
   background-blend-mode: multiply;
 }
 
 .paper-bg {
-  background-image: url("/paper-texture.png"); 
+  background-image: url("/paper-texture.png");
   background-blend-mode: multiply;
 }
 
 .light-paper-bg {
-  background-image: url("/light-paper-texture.png"); 
+  background-image: url("/light-paper-texture.png");
   background-blend-mode: multiply;
 }
 

@@ -62,9 +62,9 @@ const BioCard = () => {
               <div className="grid grid-rows-2 grid-cols-2 items-center ml-16 gap-x-4 lg:text-lg">
                 <div className="row-span-1 col-span-1 ">Skills</div>
                 <div className="row-span-1 col-span-1">
-                  <p>Full Stack Web Development</p>
+                  <p>Full Stack Web Dev</p>
                   <p>Teaching and Instruction</p>
-                  <p>Entrepreneurial Mindset</p>
+                  <p>Team Managment</p>
                 </div>
                 <div className="row-span-1 col-span-1 mt-8">Hobbies</div>
                 <div className="row-span-1 col-span-1 mt-8">
@@ -77,7 +77,7 @@ const BioCard = () => {
             <div className=" border-b-8 border-r border-white flex flex-col justify-center items-center">
               <div className="h-full w-full relative">
                 <Image
-                  src={"/face-image-placeholder2.png"}
+                  src={"/hs-bg-removed-2.png"}
                   alt=""
                   fill={true}
                   style={{ objectFit: "contain" }}
@@ -102,19 +102,18 @@ const BioCard = () => {
             I&apos;m Shaun, a growth-focused programmer with a passion for full
             stack web development. I thrive on challenges and have an insatiable
             drive to continuously expand my skills. <br />
-            With a diverse background in teaching, content creation, and running
-            my own online business, I bring a wealth of experiences to the
-            table. <br />
+            <br />
+            With a diverse background in education, content creation, and
+            running my own online business, I bring a wealth of experiences to
+            the table. <br />
             <br /> My lifelong hobbyist interest in programming led me to win a
             place on the 2022 BECAS Santander Scholarship program for Web
             Development. Since then, I have taught both Front and Back End Web
             Development, demonstrating my dedication to sharing knowledge and
             empowering others. <br />
-            <br /> By staying abreast of the latest industry trends, I offer a
-            fresh perspective and an innovative approach to every project. If
-            you&apos;re searching for a motivated and versatile programmer to
-            contribute to your team&apos;s success, let&apos;s connect and bring
-            our collective ideas to life.
+            <br /> If you&apos;re searching for a motivated and versatile
+            adittion to your team, let&apos;s connect and bring our ideas to
+            life.
           </p>
         </div>
       </div>
