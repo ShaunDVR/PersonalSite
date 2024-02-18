@@ -413,7 +413,7 @@ export default function Home() {
       );
       const constraint = Matter.Constraint.create({
         bodyA: ceiling,
-        pointA: { x: charXValue - window.innerWidth / 1.4, y: 0 },
+        pointA: { x: charXValue - window.innerWidth / 1.6, y: 0 },
         bodyB: bodies[3],
         render: {
           type: "line",
