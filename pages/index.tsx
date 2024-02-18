@@ -395,13 +395,13 @@ export default function Home() {
 
     function createMobileConstraints() {
       const constraintOptions = {
-        stiffness: 0.005,
-        damping: 0.1,
-        length: window.innerHeight / 22,
+        stiffness: 0.01,
+        damping: 0.001,
+        length: window.innerHeight / 13,
       };
       const constraintOptionsTop = {
         stiffness: 0.005,
-        damping: 0.1,
+        damping: 0.01,
         length: window.innerHeight / 20,
       };
 
@@ -487,7 +487,9 @@ export default function Home() {
     Matter.Render.run(render);
 
     matterjsRunner.isFixed = true;
-    matterjsRunner.delta = 1000 / 60;
+    if (screenSize.current < 900) {
+      matterjsRunner.delta = 1000 / 20;
+    }
     matterjsRunner.enabled = false;
 
     Matter.Events.on(matterjsRunner, "afterTick", updateFrameData);
