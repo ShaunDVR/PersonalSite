@@ -18,6 +18,7 @@ export default function Home() {
   let handOpacity = useRef(-1);
   let animDelay = useRef(true);
   let screenSize = useRef<number | null>(null);
+  let matterRunData = useRef();
 
   const marqueeLines = [
     "React Developer",
@@ -488,6 +489,13 @@ export default function Home() {
     matterjsRunner.isFixed = true;
     matterjsRunner.enabled = false;
 
+    Matter.Events.on(matterjsRunner, "afterTick", updateFrameData);
+
+    function updateFrameData(e: any): void {
+      console.log(e);
+      matterRunData.current = e.timestamp;
+    }
+
     return () => {
       Matter.Render.stop(render);
       Matter.Engine.clear(engine);
@@ -511,7 +519,7 @@ export default function Home() {
       )}
       <div className="bg-slate-800" hidden={!isLoaded}>
         <div className="bg-slate-800 flex flex-col h-screen overflow-hidden">
-          <p>{screenSize.current}</p>
+          <p>{matterRunData ? matterRunData.current : ""}</p>
           <div
             className="canvas-container gradient-opacity h-screen bg-cover bg-no-repeat bg-center bg-fixed"
             style={{
