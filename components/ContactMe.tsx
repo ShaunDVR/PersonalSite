@@ -90,7 +90,7 @@ const ContactMe = () => {
               ) : (
                 <button
                   className="px-4 py-2 rounded-md bg-blue-500 text-white mx-2"
-                  onClick={handleDownload}
+                  onClick={handleEmail}
                 >
                   Yes please!
                 </button>
