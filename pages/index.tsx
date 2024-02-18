@@ -395,13 +395,13 @@ export default function Home() {
 
     function createMobileConstraints() {
       const constraintOptions = {
-        stiffness: 0.01,
-        damping: 0.001,
-        length: window.innerHeight / 13,
+        stiffness: 0.005,
+        damping: 0.1,
+        length: window.innerHeight / 22,
       };
       const constraintOptionsTop = {
         stiffness: 0.005,
-        damping: 0.01,
+        damping: 0.1,
         length: window.innerHeight / 20,
       };
 
@@ -487,6 +487,7 @@ export default function Home() {
     Matter.Render.run(render);
 
     matterjsRunner.isFixed = true;
+    matterjsRunner.delta = 1000 / 60;
     matterjsRunner.enabled = false;
 
     Matter.Events.on(matterjsRunner, "afterTick", updateFrameData);
@@ -528,7 +529,7 @@ export default function Home() {
           >
             <canvas
               ref={canvasRef}
-              className="lg:pointer-events-auto "
+              className="md:pointer-events-auto "
             ></canvas>
           </div>
           <div className="marqueen-container absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 uppercase text-center">
