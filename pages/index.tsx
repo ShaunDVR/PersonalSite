@@ -395,12 +395,12 @@ export default function Home() {
 
     function createMobileConstraints() {
       const constraintOptions = {
-        stiffness: 0.01,
-        damping: 0.001,
+        stiffness: 0.1,
+        damping: 0.01,
         length: window.innerHeight / 13,
       };
       const constraintOptionsTop = {
-        stiffness: 0.005,
+        stiffness: 0.1,
         damping: 0.01,
         length: window.innerHeight / 20,
       };
@@ -444,7 +444,7 @@ export default function Home() {
     }
 
     if (screenSize.current && screenSize.current <= 900) {
-      createTextBodiesFromString("SHAUN", 100);
+      createTextBodiesFromString("SHAUNN", 100);
       spawnLastNameWithDelayMobile();
       createMobileConstraints();
     } else {
