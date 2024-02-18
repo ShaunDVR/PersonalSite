@@ -70,7 +70,7 @@ export default function Home() {
 
     screenSize.current = window.innerWidth;
 
-    if (screenSize.current && screenSize.current < 900) {
+    if (screenSize.current && screenSize.current < 1009) {
       const animTimeoutFaster = setTimeout(() => {
         animDelay.current = false;
         handOpacity.current = 1;
@@ -398,15 +398,21 @@ export default function Home() {
         damping: 0.001,
         length: window.innerHeight / 13,
       };
+      const constraintOptionsTop = {
+        stiffness: 0.005,
+        damping: 0.01,
+        length: window.innerHeight / 20,
+      };
+
       const charXValue = getXValueInRange(
         window.innerWidth / 10,
         window.innerWidth - window.innerWidth / 10,
-        bodies.length - 5,
+        bodies.length - 3,
         2
       );
       const constraint = Matter.Constraint.create({
         bodyA: ceiling,
-        pointA: { x: charXValue - window.innerWidth / 1.1, y: 0 },
+        pointA: { x: charXValue - window.innerWidth / 1.4, y: 0 },
         bodyB: bodies[3],
         render: {
           type: "line",
@@ -414,7 +420,7 @@ export default function Home() {
           strokeStyle: `#875638`,
           lineWidth: 7,
         },
-        ...constraintOptions,
+        ...constraintOptionsTop,
       });
       Matter.World.add(engine.world, constraint);
 
