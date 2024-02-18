@@ -89,7 +89,7 @@ const BioCard = () => {
           <div className="row-span-2 border-b-8 border-r border-white flex flex-col justify-center items-center">
             <div className="h-full w-full relative">
               <Image
-                src={"/face-image-placeholder2.png"}
+                src={"/hs-bg-removed-2.png"}
                 alt=""
                 fill={true}
                 style={{ objectFit: "contain" }}
