@@ -48,7 +48,7 @@ const ContactMe = () => {
       return;
     }
 
-    const emailAddress = "shaunrework@gmail.com"; // Replace with your email address
+    const emailAddress = "syzygysquare@gmail.com"; // Replace with your email address
     const mailtoLink = `mailto:${emailAddress}`;
     window.location.href = mailtoLink;
   };
