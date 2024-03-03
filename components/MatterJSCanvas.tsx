@@ -158,8 +158,8 @@ const CanvasComponent = ({ screenSize }: { screenSize: number }) => {
 
     for (let i = 2; i < bodies.length; i++) {
       const charXValue = getXValueInRange(
-        window.innerWidth / 10,
-        window.innerWidth - window.innerWidth / 10,
+        window.innerWidth / 30,
+        window.innerWidth - window.innerWidth / 30,
         bodies.length - 2,
         i
       );
